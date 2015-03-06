@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>ViSiProg</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+	<script src="{% static 'main.js' %}"></script>
+
+</head>
+
+<body>
+<div>
+	<input type="button" id="Shuffle" style="margin-top:20px" value="Shuffle" data-inline="true" onclick="Shuffle();">
+
+	<input type="button" id="Submit" style="margin-top:20px" value="Submit" data-inline="true" onclick="Submit();">
+</div>
+
+<div class="wrapper">
+	<div id="group" class="ui-widget-content ui-stable-default">
+		<h4 class="ui-widget-header"> Group </h4>
+		<ul class="batch ui-helper-reset"></ul>
+	</div>
+
+	<div class="ui-widget ui-helper-clearfix">
+		<ul id="batch" class="batch ui-helper-reset ui-helper-clearfix"> </ul>
+	</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <section>
+    Welcome, <b> {{user.username}} </b>
+    <a href="/interface/"> Home</a></li> <a href="/logout/">Logout</a></li>
+  </section>
+
+  {% block content %}{% endblock %}
+
+{% endblock %}
