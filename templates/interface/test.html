@@ -1,8 +1,6 @@
-<!DOCTYPE html>
+{% extends "interface/portal.html" %}
 
-<html lang="en">
-<head>
-	<meta charset="utf-8">
+{% block head %}
 	<title>ViSiProg</title>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
@@ -12,13 +10,13 @@
 	<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 	<script src="{% static 'main.js' %}"></script>
 
-</head>
+{% endblock %}
 
-<body>
+{% block content %}
 <div>
-	<input type="button" id="Shuffle" style="margin-top:20px" value="Shuffle" data-inline="true" onclick="Shuffle();">
+	<input type="button" id="ShuffleButton" style="margin-top:20px" value="Shuffle" data-inline="true">
 
-	<input type="button" id="Submit" style="margin-top:20px" value="Submit" data-inline="true" onclick="Submit();">
+	<input type="button" id="SubmitButton" style="margin-top:20px" value="Submit" data-inline="true">
 </div>
 
 <div class="wrapper">
@@ -32,6 +30,11 @@
 	</div>
 </div>
 
-</body>
+<script>
+	controller.init(function() {
+		controller.makeUIactions();
+	})
+	
+</script>
+{% endblock %}
 
-</html>

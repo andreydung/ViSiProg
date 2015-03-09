@@ -73,7 +73,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
-STATICFILES_DIR = (BASE_DIR, "static")
+
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/list.txt'))]
+
+LISTIMAGE = {}
+for i in range(len(listimage)):
+    LISTIMAGE[i] = listimage[i]
+
+IMAGEPATH = '/static/images/'
 
 
 STATIC_URL = '/static/'
