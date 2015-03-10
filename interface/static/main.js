@@ -8,12 +8,14 @@ var controller = (function () {
   var N_TOTAL;
   var prob = [];
   var inPool = [];
-  var Nshown;
+  var haveSeen = [];
+  var Nshown = 0;
 
   var currentGroup = [];
   var previousGroup = [];
 
   var pressAllowed = true;
+  var firstShuffle = true;
 
   function initializeArray(value, len) {
     // initialize an array of len with value
@@ -42,7 +44,7 @@ var controller = (function () {
       if (cum > random)
         return i;
     }
-    return N_TOTAL;
+    return N_TOTAL - 1;
   }
 
   function intersect(a, b) {
@@ -69,6 +71,80 @@ var controller = (function () {
     return count;
   }
 
+  function shuffleHelper(keptback) {
+    // Don't shuffle image from group that are back to batch
+    if (keptback == true)
+      var imgBatch = $("#batch img").slice(0, N_BATCH - N_GROUP);
+    else
+      var imgBatch = $("#batch img");
+    $.each(imgBatch, function() {
+      var tmp = randomFromPool();
+      $(this).attr({"src": folderPath.concat(listimage[tmp]),
+                      "id": tmp})
+    })
+  }
+
+  function Shuffle() {
+    if ($('#group ul li').length < N_GROUP)
+    {
+      alert(" You must put 9 images in the group box!");
+      return;
+    }
+
+    var currentGroup = $("#group img").map(function(){
+      return $(this).attr("id");        
+    }).get();
+
+    // Store selection to local web storage
+    console.log(currentGroup.toString());
+    var tmp = localStorage.getItem("groups");
+    localStorage.setItem("groups", tmp.concat(currentGroup.toString().concat(",end,")));
+
+    // Change probability of shown images
+    $("#batch img").map(function() {
+      if (haveSeen[$(this).attr("id")] === 0) {
+        haveSeen[$(this).attr("id")] = 1;
+        Nshown += 1;
+      }
+      prob[$(this).attr("id")] /= 4;
+    })
+    
+    $("#progress").text(Nshown.toString());
+
+    if (firstShuffle) { 
+      firstShuffle = false;
+      previousGroup = currentGroup;     
+      shuffleHelper(false);
+    }
+    else
+    {
+      // Check how much overlap with previous group
+      if (intersect(previousGroup, currentGroup) < N_GROUP/2) {
+        
+        // remove this images from Pool
+        $("#group img").map(function() {
+          if (inPool[$(this).attr("id")] === 1) {
+            inPool[$(this).attr("id")] = 0;
+          }
+        });
+        // Move all in Group back to Batch
+        var imgGroup = $("#group ul li");
+        $.each(imgGroup, function() {
+          $("#batch").append($(this));
+        })
+
+        // Clear the Group box
+        $("#group ul li").remove();
+
+        // shuffle image from batch only
+        shuffleHelper(true);
+      }
+      else {
+        shuffleHelper(false);
+      }
+    }
+  }
+
   return {
     init: function(callback) {
       localStorage.clear();
@@ -82,6 +158,7 @@ var controller = (function () {
 
         prob = initializeArray(1, N_TOTAL);
         inPool = initializeArray(1, N_TOTAL);
+        haveSeen = initializeArray(0, N_TOTAL);
 
         for (i = 0; i < N_BATCH; i++) {
           var tmp = randomFromPool();
@@ -147,15 +224,14 @@ var controller = (function () {
       }
       });
 
-      // document.getElementById("ShuffleButton").addEventListener("click", ShuffleBatch);
-      $("#ShuffleButton").on("click", ShuffleBatch);
+      $("#ShuffleButton").on("click", Shuffle);
       $(window).keypress(function(e) {
         e.preventDefault();
         if (!pressAllowed) 
           return;
         pressAllowed = false;
         if (e.keyCode == 0 || e.keyCode == 32) {
-          ShuffleBatch();  
+          Shuffle();  
         }
       });
 
@@ -163,54 +239,6 @@ var controller = (function () {
         pressAllowed = true;
       });
       
-      function ShuffleBatch() {
-        // reset group and store result
-        if ($('#group ul li').length < N_GROUP)
-        {
-          alert(" You must put 9 images in the group box!");
-        }
-        else
-        {
-          previousGroup = currentGroup;
-          var currentGroup = $("#group img").map(function(){
-            return $(this).attr("id");        
-          }).get();
-
-          // // Check how much overlap with previous group
-          // if (intersect(previousGroup, currentGroup) < N_GROUP/2) {
-          //   $("group ul").remove();
-          // }
-
-          // Remove shown image in batch from the pool
-          $("#batch img").map(function() {
-            console.log("Show this image")
-            console.log($(this).attr("id"));
-            console.log(inPool[$(this).attr("id")]);
-            if (inPool[$(this).attr("id")] === 1)
-              Nshown += 1;
-            inPool[$(this).attr("id")] = 0;
-          })
-          
-
-          $("#progress").text(Nshown.toString());
-
-          // Shuffle
-          var imgBatch = $("#batch img");
-          $.each(imgBatch, function() {
-            var tmp = randomFromPool();
-            $(this).attr({"src": folderPath.concat(listimage[tmp]),
-                            "id": tmp})
-          })
-
-          // Store selection to local web storage
-          
-          console.log(currentGroup.toString());
-
-          var tmp = localStorage.getItem("groups").toString();
-          localStorage.setItem("groups", tmp.concat(currentGroup.toString().concat(",end,")));
-        }
-      }
-
       function Submit() {
         // send result to server
       }
