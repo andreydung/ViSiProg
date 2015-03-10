@@ -1,14 +1,14 @@
 {% extends "interface/portal.html" %}
 
 {% block head %}
-	<title>ViSiProg</title>
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <title>ViSiProg</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
-	{% load static %}
-	<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
-	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
-	<script src="{% static 'main.js' %}"></script>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+  <script src="{% static 'main.js' %}"></script>
 
 {% endblock %}
 
@@ -18,28 +18,49 @@ Drag images from the right into Group box.
 </div>
 
 <div>
-	<span id="progress"> You have seen 0% of the database </span>
-	<input type="button" id="ShuffleButton" style="margin-top:20px" value="Shuffle" data-inline="true">
-
-	<input type="button" id="SubmitButton" style="margin-top:20px" value="Submit" data-inline="true">
+  <span id="progress"> You have seen 0% of the database </span>
+  <input type="button" id="ShuffleButton" style="margin-top:20px" value="Shuffle" data-inline="true">
+  <button id="SubmitButton" style="display:none">Submit</button>
 </div>
 
 <div class="wrapper">
-	<div id="group" class="ui-widget-content ui-stable-default">
-		<h4 class="ui-widget-header"> Group </h4>
-		<ul class="batch ui-helper-reset"></ul>
-	</div>
+  <div id="group" class="ui-widget-content ui-stable-default">
+    <h4 class="ui-widget-header"> Group </h4>
+    <ul class="batch ui-helper-reset"></ul>
+  </div>
 
-	<div class="ui-widget ui-helper-clearfix">
-		<ul id="batch" class="batch ui-helper-reset ui-helper-clearfix"> </ul>
-	</div>
+  <div class="ui-widget ui-helper-clearfix">
+    <ul id="batch" class="batch ui-helper-reset ui-helper-clearfix"> </ul>
+  </div>
 </div>
 
 <script>
-	controller.init(function() {
-		controller.makeUIactions();
-	})
-	
+  controller.init(function() {
+    controller.makeUIactions();
+  })
+
+  $('#SubmitButton').on("click", submitData);
+
+  function submitData() {
+  // send result to server
+    var groups = localStorage.getItem("groups");
+    // var userid = {{user.userid}};
+    // console.log(groups);
+
+    $.ajax({
+      url:"/interface/test/",
+      type:"POST",
+      data: { group:groups,
+              csrfmiddlewaretoken: '{{ csrf_token }}'},
+      success:function() {
+        alert("Submitted succeffully");
+      },
+      error:function() {
+        alert("Something is wrong with submission");
+      }
+    })
+  }
+  
 </script>
 {% endblock %}
 

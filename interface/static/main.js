@@ -77,8 +77,11 @@ var controller = (function () {
       var imgBatch = $("#batch img").slice(0, N_BATCH - N_GROUP);
     else
       var imgBatch = $("#batch img");
+
     $.each(imgBatch, function() {
       var tmp = randomFromPool();
+      console.log("tmp is ");
+      console.log(tmp.toString());
       $(this).attr({"src": folderPath.concat(listimage[tmp]),
                       "id": tmp})
     })
@@ -109,7 +112,10 @@ var controller = (function () {
       prob[$(this).attr("id")] /= 4;
     })
     
-    $("#progress").text(Nshown.toString());
+    $("#progress").text("You have seen ".concat(Math.floor(100*Nshown/N_TOTAL).toString()).concat("% of the database"));
+
+    if (Nshown == N_TOTAL)
+      $("#SubmitButton").css('display', 'inline');
 
     if (firstShuffle) { 
       firstShuffle = false;
@@ -182,6 +188,8 @@ var controller = (function () {
         cursor: "move"
       });
 
+      $("#SubmitButton").css('display', 'none');
+
       // droppable group
       $group.droppable({
         accept: "#batch > li",
@@ -202,18 +210,18 @@ var controller = (function () {
 
       function moveToGroup( $item ) {
         $item.fadeOut(function() {
-          var $list = $( "ul", $group)
+          var $list = $( "ul", $group);
           $item.appendTo( $list ).fadeIn(function() {
             $item.find( "img" )
           });
         });
-      }
+        }
 
       function moveToBatch( $item ) {
         $item.fadeOut(function() {
           $item.appendTo($batch).fadeIn();
         });
-      }
+        }
 
       $(document).on("mousedown", function () {
         if ($('#group ul li').length >= N_GROUP) {
@@ -225,6 +233,7 @@ var controller = (function () {
       });
 
       $("#ShuffleButton").on("click", Shuffle);
+
       $(window).keypress(function(e) {
         e.preventDefault();
         if (!pressAllowed) 
@@ -237,11 +246,7 @@ var controller = (function () {
 
       $(window).keyup(function(e) {
         pressAllowed = true;
-      });
-      
-      function Submit() {
-        // send result to server
-      }
+      });      
     }
   };
 }) ();
