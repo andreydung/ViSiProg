@@ -73,15 +73,15 @@ var controller = (function () {
 
   function shuffleHelper(keptback) {
     // Don't shuffle image from group that are back to batch
-    if (keptback == true)
+    if (keptback == true) {
+      console.log("Skip shuffling image from batch");
       var imgBatch = $("#batch img").slice(0, N_BATCH - N_GROUP);
+    }
     else
       var imgBatch = $("#batch img");
 
     $.each(imgBatch, function() {
       var tmp = randomFromPool();
-      console.log("tmp is ");
-      console.log(tmp.toString());
       $(this).attr({"src": folderPath.concat(listimage[tmp]),
                       "id": tmp})
     })
@@ -90,7 +90,7 @@ var controller = (function () {
   function Shuffle() {
     if ($('#group ul li').length < N_GROUP)
     {
-      alert(" You must put 9 images in the group box!");
+      $("<div> You must put 9 images in the group box! </div>").dialog();
       return;
     }
 
@@ -111,7 +111,16 @@ var controller = (function () {
       }
       prob[$(this).attr("id")] /= 4;
     })
+    // Change probability of shown images
+    $("#group img").map(function() {
+      if (haveSeen[$(this).attr("id")] === 0) {
+        haveSeen[$(this).attr("id")] = 1;
+        Nshown += 1;
+      }
+      prob[$(this).attr("id")] /= 4;
+    })
     
+
     $("#progress").text("You have seen ".concat(Math.floor(100*Nshown/N_TOTAL).toString()).concat("% of the database"));
 
     if (Nshown == N_TOTAL)
@@ -119,14 +128,13 @@ var controller = (function () {
 
     if (firstShuffle) { 
       firstShuffle = false;
-      previousGroup = currentGroup;     
       shuffleHelper(false);
     }
     else
     {
       // Check how much overlap with previous group
       if (intersect(previousGroup, currentGroup) < N_GROUP/2) {
-        
+        console.log("Less than 1/2 of repeating");
         // remove this images from Pool
         $("#group img").map(function() {
           if (inPool[$(this).attr("id")] === 1) {
@@ -149,6 +157,7 @@ var controller = (function () {
         shuffleHelper(false);
       }
     }
+    previousGroup = currentGroup;
   }
 
   return {
@@ -209,18 +218,20 @@ var controller = (function () {
       });
 
       function moveToGroup( $item ) {
-        $item.fadeOut(function() {
+        $item.fadeOut(1, function() {
           var $list = $( "ul", $group);
-          $item.appendTo( $list ).fadeIn(function() {
+          $item.appendTo( $list ).fadeIn(1, function() {
             $item.find( "img" )
           });
         });
         }
 
       function moveToBatch( $item ) {
-        $item.fadeOut(function() {
-          $item.appendTo($batch).fadeIn();
+        $item.fadeOut(1, function() {
+          $item.appendTo($batch).fadeIn(1);
         });
+          // $item.appendTo($batch);
+          // $item.remove();
         }
 
       $(document).on("mousedown", function () {

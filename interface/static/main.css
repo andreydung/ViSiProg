@@ -1,22 +1,44 @@
-	*{
-		margin:0; padding:0;  
-	}
+*{
+	margin:0; padding:0;  
+}
 
-	.wrapper{
-		margin-top:10px; position :relative;
-		width: 100%; margin: 0px auto; height:1000px;
-	}
-	#group {
-		position: absolute; top:300px; left:0; bottom:0; 
-		background: orange; width: 400px; height:416px;
-		display:inline-block;
-	}
-	#group h4 { line-height: 16px; margin: 0 0 0.4em; }
-	#group h4 .ui-icon { float: left; }
+.wrapper{
+	margin-top: 10px; 
+	position :relative;
+	width: 100%; 
+	margin: 0px auto; 
+	height:1000px;
+}
 
-	#batch{
-		position :absolute; top:0px; right:0;
-		bottom:0; left:400px; width: 800px; height: 800px; background:blue; 
-	}
-	.batch li { float: left; width: 128px; 
-				margin: 1 1em 1em 1;}
+#group {
+	position: absolute; 
+	top: 300px; left: 0; 
+	bottom: 0; 
+	width: 390px; height: 420px;
+	background: orange; 
+	display:inline-block;
+}
+
+#group h4 { 
+	line-height: 16px; 
+	margin: 0 0 0.4em; 
+}
+
+#batch {
+	position: absolute; 
+	top: 10px; right: 10;
+	bottom:0; left:400px; 
+	width: 780px; height: 780px; 
+	background: DarkSlateBlue; 
+}
+
+.batch li { 
+	float: left; 
+	width: 128px; 
+	margin: 1 1em 1em 1;
+}
+
+.batch li img { 
+	display:block;
+	margin:auto;
+}
