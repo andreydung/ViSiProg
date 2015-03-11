@@ -236,15 +236,16 @@ var controller = (function () {
 
       $(window).keypress(function(e) {
         e.preventDefault();
-        if (!pressAllowed) 
-          return;
-        pressAllowed = false;
-        if (e.keyCode == 0 || e.keyCode == 32) {
-          Shuffle();  
+        if (pressAllowed) {
+          pressAllowed = false;
+          if (e.keyCode == 0 || e.keyCode == 32) {
+            Shuffle();  
+          }          
         }
       });
 
       $(window).keyup(function(e) {
+        e.preventDefault();
         pressAllowed = true;
       });      
     }

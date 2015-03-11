@@ -54,10 +54,8 @@ Drag images from the right into Group box.
               csrfmiddlewaretoken: '{{ csrf_token }}'},
       success:function() {
         alert("Submitted succeffully");
+        window.location = '/interface/groups/'
       },
-      error:function() {
-        alert("Something is wrong with submission");
-      }
     })
   }
   

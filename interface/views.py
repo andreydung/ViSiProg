@@ -7,16 +7,13 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 
-# def validateGroup(value):
-#     try:
-#         a = [int(s) for s in value.lsplit().split(" ")]
-#         print a
-#         if len(a) != 9:
-#             raise ValidationError("Wrong number of entries in group")
-#     except ValidationError, err:
-#         raise err
-
-
+def validateGroup(value):
+    groups = value.split(",end,")[:-1]
+    for g in groups:
+        numbers = g.split(",")
+        if len(numbers) != 9:
+            raise Exception("Wrong number of image per each group!!")
+    
 # Create your views here.
 @login_required
 def interface_page(request):
@@ -27,24 +24,25 @@ def interface_page(request):
 def test_page(request):
     if request.method == "POST":
         newgroup = request.POST["group"]
-        print "Received result"
-        # assert validateGroup(newgroup)
+        validateGroup(newgroup)
+
         t = Trial(group = newgroup, time = timezone.now(), subject = request.user)
         t.save()
-        return HttpResponseRedirect()
+        return HttpResponseRedirect('/interface/groups/')
 
     return render_to_response('interface/test.html',\
                     context_instance=RequestContext(request))
 
 @login_required
 def groups_page(request):
-    trials = Trial.objects.filter(subject_id = request.user.id)
-    lastresult = []
+    trials = Trial.objects.filter(subject_id = request.user.id).order_by('-time')
+    lastgroups = []
     for t in trials:
-        tmp = [settings.LISTIMAGE[int(c)] for c in t.group.split(" ")][-9:]
-        lastresult.append(tmp)
+        tmp = t.group.split(',end,')[-2]
+        lastgroup = [settings.LISTIMAGE[int(c)] for c in tmp.split(",")]
+        lastgroups.append(lastgroup)
 
     return render_to_response('interface/groups.html',\
-                    {'groups': lastresult, 'imagepath': settings.IMAGEPATH},\
+                    {'groups': lastgroups, 'imagepath': settings.IMAGEPATH},\
                     context_instance=RequestContext(request))
 
