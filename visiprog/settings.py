@@ -99,5 +99,5 @@ LLNL3PATH = '/static/LLNL3/'
 STATIC_ROOT = '/var/www/static/'
 LOGIN_URL = '/visiprog/login/'
 
-# FORCE_SCRIPT_NAME = '/visiprog'
+FORCE_SCRIPT_NAME = '/visiprog'
 # USE_X_FORWARDED_HOST = True
