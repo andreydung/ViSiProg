@@ -6,8 +6,19 @@ from django.core.exceptions import ValidationError
 class Trial(models.Model):
 	group = models.CharField(max_length = 2000)
 	time = models.DateTimeField()
-	subject = models.ForeignKey(User, related_name = "User")
+	subject = models.ForeignKey(User)
 
+# Create your models here.
+class TrialLLNL2(models.Model):
+	group = models.CharField(max_length = 5000)
+	time = models.DateTimeField()
+	subject = models.ForeignKey(User)
+
+# Create your models here.
+class TrialLLNL3(models.Model):
+	group = models.CharField(max_length = 5000)
+	time = models.DateTimeField()
+	subject = models.ForeignKey(User)
 
 
 

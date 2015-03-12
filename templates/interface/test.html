@@ -48,13 +48,13 @@ Drag images from the right into Group box.
     // console.log(groups);
 
     $.ajax({
-      url:"/interface/test/",
+      url:"{%url 'interface:test'%}",
       type:"POST",
       data: { group:groups,
               csrfmiddlewaretoken: '{{ csrf_token }}'},
       success:function() {
         alert("Submitted succeffully");
-        window.location = '/interface/groups/'
+        window.location = '{%url 'interface:group'%}'
       },
     })
   }

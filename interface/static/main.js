@@ -2,8 +2,8 @@ var controller = (function () {
 
   var N_BATCH = 36;
   var N_GROUP = 9;
-  var folderPath="/static/images/";
-  var listPath="/static/list.txt";
+  var folderPath="/static/Google/";
+  var listPath="/static/Google/list.txt";
   var listimage;
   var N_TOTAL;
   var prob = [];

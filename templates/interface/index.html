@@ -2,9 +2,25 @@
 
 {% block content %}
   <section>
-    <p> <a href = "/interface/test"> Do test </a> </p>
-    <p> <a href = "/interface/groups"> View groups </a> </p>
-    <p> Currently you have N groups and have identified N similar images </p>
-
+  <h2> Google database </h2>
+    <p> <a href = "{%url 'interface:test'%}"> Do test </a> </p>
+    <p> <a href = "{%url 'interface:group'%}"> View groups </a> </p>
   </section>
+
+  <section>
+  <h2> LLNL2 database </h2>
+    <p> <a href = "{%url 'interface:testLLNL2'%}"> Do test </a> </p>
+    <p> <a href = "{%url 'interface:groupLLNL2'%}"> View groups </a> </p>
+  </section>
+
+  <section>
+  <h2> LLNL3 database </h2>
+    <p> <a href = "{%url 'interface:testLLNL3'%}"> Do test </a> </p>
+    <p> <a href = "{%url 'interface:groupLLNL3'%}"> View groups </a> </p>
+  </section>
+
+  <h2> Building database </h2>
+
+  <h2> Color database </h2>
+
 {% endblock %}

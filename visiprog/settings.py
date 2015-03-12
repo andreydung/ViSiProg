@@ -49,6 +49,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
 )
 
 ROOT_URLCONF = 'visiprog.urls'
@@ -76,13 +77,27 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
 
-listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/list.txt'))]
-LISTIMAGE = {}
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/Google/list.txt'))]
+LISTGOOGLE = {}
 for i in range(len(listimage)):
-    LISTIMAGE[i] = listimage[i]
+    LISTGOOGLE[i] = listimage[i]
 
-IMAGEPATH = '/static/images/'
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/LLNL2/list.txt'))]
+LISTLLNL2 = {}
+for i in range(len(listimage)):
+    LISTLLNL2[i] = listimage[i]
+
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/LLNL3/list.txt'))]
+LISTLLNL3 = {}
+for i in range(len(listimage)):
+    LISTLLNL3[i] = listimage[i]
+
+IMAGEPATH = '/static/Google/'
+LLNL2PATH = '/static/LLNL2/'
+LLNL3PATH = '/static/LLNL3/'
 
 STATIC_ROOT = '/var/www/static/'
+LOGIN_URL = '/visiprog/login/'
 
-LOGIN_URL = '/login/'
+# FORCE_SCRIPT_NAME = '/visiprog'
+# USE_X_FORWARDED_HOST = True

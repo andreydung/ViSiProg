@@ -28,7 +28,7 @@
       {% if next %}
         <input type="hidden" name="next" value="{{ next }}" />
       {% else %}
-        <input type="hidden" name="next" value="/interface/" />
+        <input type="hidden" name="next" value="{% url 'interface:index'%}" />
       {% endif %}
       <input type="submit" value="login" />
     </form>

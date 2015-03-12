@@ -3,7 +3,7 @@
 {% block body %}
   <section>
     Welcome, <b> {{user.username}} </b>
-    <a href="/interface/"> Home</a></li> <a href="/logout/">Logout</a></li>
+    <a href="{% url 'interface:index'%}"> Home</a></li> <a href="/visiprog/logout/">Logout</a></li>
   </section>
 
   {% block content %}
