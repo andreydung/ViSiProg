@@ -117,3 +117,36 @@ def groups_page_LLNL3(request, theusername = ""):
     return render_to_response('interface/groups.html',\
                     {'groups': lastgroups, 'imagepath': settings.LLNL3PATH},\
                     context_instance=RequestContext(request))
+
+
+# ============================= Color =========================================
+@ensure_csrf_cookie
+@login_required
+def test_page_COLOR(request):
+    if request.method == "POST":
+        newgroup = request.POST["group"]
+        validateGroup(newgroup)
+
+        t = TrialCOLOR(group = newgroup, time = timezone.now(), subject = request.user)
+        t.save()
+        groups_page_COLOR(request)
+
+    return render_to_response('interface/testCOLOR.html',\
+                    context_instance=RequestContext(request))
+
+def groups_page_COLOR(request, theusername = ""):
+    if theusername:
+        userid = User.objects.get(username=theusername).pk
+    else:
+        userid = request.user.id
+
+    trials = TrialCOLOR.objects.filter(subject_id = userid).order_by('-time')
+    lastgroups = []
+    for t in trials:
+        tmp = t.group.split(',end,')[-2]
+        lastgroup = [settings.LISTCOLOR[int(c)] for c in tmp.split(",")]
+        lastgroups.append(lastgroup)
+
+    return render_to_response('interface/groups.html',\
+                    {'groups': lastgroups, 'imagepath': settings.COLORPATH},\
+                    context_instance=RequestContext(request))

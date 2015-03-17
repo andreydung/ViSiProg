@@ -22,9 +22,9 @@ print BASE_DIR
 SECRET_KEY = '!t(i(9f2$1v=g91k@&msoz1m*vl6ck&t=4aop7+xfkta&*&h_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+TEMPLATE_DEBUG = False
+ALLOWED_HOSTS = ['.eecs.northwestern.edu']
 
 # Application definition
 INSTALLED_APPS = (
@@ -91,6 +91,11 @@ listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/LL
 LISTLLNL3 = {}
 for i in range(len(listimage)):
     LISTLLNL3[i] = listimage[i]
+
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/COLOR/list.txt'))]
+LISTCOLOR = {}
+for i in range(len(listimage)):
+    LISTCOLOR[i] = listimage[i]
 
 IMAGEPATH = '/static/Google/'
 LLNL2PATH = '/static/LLNL2/'
