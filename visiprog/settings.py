@@ -22,8 +22,9 @@ print BASE_DIR
 SECRET_KEY = '!t(i(9f2$1v=g91k@&msoz1m*vl6ck&t=4aop7+xfkta&*&h_k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = False
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['.eecs.northwestern.edu']
 
 # Application definition
@@ -35,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'interface',
+    'south',
 )
 
 TEMPLATE_DIRS = (
@@ -97,12 +99,19 @@ LISTCOLOR = {}
 for i in range(len(listimage)):
     LISTCOLOR[i] = listimage[i]
 
+listimage = [f.rstrip() for f in open(os.path.join(BASE_DIR,'interface/static/Building/list.txt'))]
+LISTBUILDING = {}
+for i in range(len(listimage)):
+    LISTBUILDING[i] = listimage[i]
+
 IMAGEPATH = '/static/Google/'
 LLNL2PATH = '/static/LLNL2/'
 LLNL3PATH = '/static/LLNL3/'
+COLORPATH = '/static/COLOR/'
+BUILDINGPATH = '/static/Building/'
 
 STATIC_ROOT = '/var/www/static/'
 LOGIN_URL = '/visiprog/login/'
 
-FORCE_SCRIPT_NAME = '/visiprog'
+# FORCE_SCRIPT_NAME = '/visiprog'
 # USE_X_FORWARDED_HOST = True

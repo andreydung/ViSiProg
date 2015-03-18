@@ -15,4 +15,11 @@ urlpatterns = patterns('',
     url(r'^groupsLLNL3/$', groups_page_LLNL3, name = 'groupLLNL3'),
     url(r'^groupsLLNL3/(?P<theusername>\w+)/$', groups_page_LLNL3),
 
+    url(r'^testCOLOR/$', test_page_COLOR, name = 'testCOLOR'),
+    url(r'^groupsCOLOR/$', groups_page_COLOR, name = 'groupCOLOR'),
+    url(r'^groupsCOLOR/(?P<theusername>\w+)/$', groups_page_COLOR),
+
+    url(r'^testBuilding/$', test_page_Building, name = 'testBuilding'),
+    url(r'^groupsBuilding/$', groups_page_Building, name = 'groupBuilding'),
+    url(r'^groupsBuilding/(?P<theusername>\w+)/$', groups_page_Building),
 )

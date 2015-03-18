@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, render
 from django.contrib.auth.decorators import login_required
-from interface.models import Trial, TrialLLNL2, TrialLLNL3
+from interface.models import Trial, TrialLLNL2, TrialLLNL3, TrialCOLOR, TrialBuilding
 from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.conf import settings
@@ -149,4 +149,36 @@ def groups_page_COLOR(request, theusername = ""):
 
     return render_to_response('interface/groups.html',\
                     {'groups': lastgroups, 'imagepath': settings.COLORPATH},\
+                    context_instance=RequestContext(request))
+
+# ============================= Buildings =========================================
+@ensure_csrf_cookie
+@login_required
+def test_page_Building(request):
+    if request.method == "POST":
+        newgroup = request.POST["group"]
+        validateGroup(newgroup)
+
+        t = TrialBuilding(group = newgroup, time = timezone.now(), subject = request.user)
+        t.save()
+        groups_page_Building(request)
+
+    return render_to_response('interface/testBuilding.html',\
+                    context_instance=RequestContext(request))
+
+def groups_page_Building(request, theusername = ""):
+    if theusername:
+        userid = User.objects.get(username=theusername).pk
+    else:
+        userid = request.user.id
+
+    trials = TrialBuilding.objects.filter(subject_id = userid).order_by('-time')
+    lastgroups = []
+    for t in trials:
+        tmp = t.group.split(',end,')[-2]
+        lastgroup = [settings.LISTBUILDING[int(c)] for c in tmp.split(",")]
+        lastgroups.append(lastgroup)
+
+    return render_to_response('interface/groups.html',\
+                    {'groups': lastgroups, 'imagepath': settings.BUILDINGPATH},\
                     context_instance=RequestContext(request))

@@ -110,6 +110,7 @@ var controller = (function () {
         Nshown += 1;
       }
       prob[$(this).attr("id")] /= 4;
+      inPool[$(this).attr("id")] = 1;
     })
     // Change probability of shown images
     $("#group img").map(function() {
@@ -118,6 +119,7 @@ var controller = (function () {
         Nshown += 1;
       }
       prob[$(this).attr("id")] /= 4;
+      inPool[$(this).attr("id")] = 0;
     })
     
 

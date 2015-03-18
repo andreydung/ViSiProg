@@ -21,11 +21,15 @@ class TrialLLNL3(models.Model):
 	subject = models.ForeignKey(User)
 
 # Create your models here.
-class TrialColor(models.Model):
+class TrialCOLOR(models.Model):
 	group = models.CharField(max_length = 100000)
 	time = models.DateTimeField()
 	subject = models.ForeignKey(User)
 
-
+# Create your models here.
+class TrialBuilding(models.Model):
+	group = models.CharField(max_length = 100000)
+	time = models.DateTimeField()
+	subject = models.ForeignKey(User)
 
 
