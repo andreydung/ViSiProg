@@ -1,0 +1,33 @@
+{% extends "interface/portal.html" %}
+
+{% block content %}
+<h2> Groups of similar textures </h2>
+<table  cellpadding="4" style="border: 1px solid #000000; border-collapse: collapse;" border="1">
+    <TR>
+        <TH>Trial</TH>
+        <TH>Im1</TH>
+        <TH>Im2</TH>
+        <TH>Im3</TH>
+        <TH>Im4</TH>
+        <TH>Im5</TH>
+        <TH>Im6</TH>
+        <TH>Im7</TH>
+        <TH>Im8</TH>
+        <TH>Im9</TH>
+    </TR>
+    {% for g in groups%}
+    <TR>
+        <TD>
+            {{forloop.counter}}
+        </TD>
+
+        {% for img in g%}
+        <TD>
+            <center> {{img}} </center>
+            <img height = "128" src = "{{imagepath}}{{ img }}">
+        </TD>
+        {% endfor %}
+    </TR>
+    {% endfor %}
+</table>
+{% endblock %}
