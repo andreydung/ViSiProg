@@ -1,5 +1,5 @@
 *{
-	margin:0; padding:0;  
+	margin:10; padding:0;  
 }
 
 .wrapper{
@@ -14,8 +14,8 @@
 	position: absolute; 
 	top: 300px; left: 0; 
 	bottom: 0; 
-	width: 390px; height: 420px;
-	background: orange; 
+	width: 420px; height: 450px;
+	background: #55FF7F; 
 	display:inline-block;
 }
 
@@ -27,9 +27,9 @@
 #batch {
 	position: absolute; 
 	top: 10px; right: 10;
-	bottom:0; left:400px; 
-	width: 780px; height: 780px; 
-	background: DarkSlateBlue; 
+	bottom:0; left:430px; 
+	width: 840px; height: 840px; 
+	background: #C8C8C8; 
 }
 
 .batch li { 
@@ -41,4 +41,8 @@
 .batch li img { 
 	display:block;
 	margin:auto;
+}
+
+li {
+	margin: 5px;
 }
