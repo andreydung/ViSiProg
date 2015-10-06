@@ -152,7 +152,7 @@ var controller = (function () {
       inPool[$(this).attr("id")] = 0;
     })
     
-    $("#progress").text("You have seen ".concat(Math.floor(Nshown/N_TOTAL).toString()).concat("% of the database"));
+    $("#progress").text("You have seen ".concat(Math.floor(100*Nshown/N_TOTAL).toString()).concat("% of the database"));
 
     if (Nshown == N_TOTAL)
       $("#SubmitButton").css('display', 'inline');
@@ -226,7 +226,8 @@ var controller = (function () {
         revert: "invalid", // when not dropped, the item will revert back to its initial position
         containment: "document",
         helper: "clone",
-        cursor: "move"
+        cursor: "move",
+        stack: ".batch"
       });
 
       $("#SubmitButton").css('display', 'none');
@@ -256,7 +257,7 @@ var controller = (function () {
             $item.find( "img" )
           });
         });
-        }
+      }
 
       function moveToBatch( $item ) {
         $item.fadeOut(1, function() {
