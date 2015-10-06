@@ -6,9 +6,10 @@ from django.template import RequestContext
 from django.conf import settings
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ValidationError
 from django.conf import settings
+import json
 
 def validateGroup(value):
     groups = value.split(",end,")[:-1]
@@ -118,7 +119,6 @@ def groups_page_LLNL3(request, theusername = ""):
                     {'groups': lastgroups, 'imagepath': settings.LLNL3PATH},\
                     context_instance=RequestContext(request))
 
-
 # ============================= Color =========================================
 @ensure_csrf_cookie
 @login_required
@@ -150,6 +150,21 @@ def groups_page_COLOR(request, theusername = ""):
     return render_to_response('interface/groups.html',\
                     {'groups': lastgroups, 'imagepath': settings.COLORPATH},\
                     context_instance=RequestContext(request))
+
+def summary_COLOR(request):
+    trials = TrialCOLOR.objects.all()
+    summary = []
+    for t in trials:
+        tmp = t.group.split(',end,')[-2]
+        tmp = [int(k) for k in tmp.split(',')]
+        print type(tmp)
+        print sorted(tmp)
+        summary += sorted(tmp)
+    print summary
+    response = {}
+    response['summary'] = summary
+    return HttpResponse(json.dumps(response), content_type = "application/json")
+
 
 # ============================= Buildings =========================================
 @ensure_csrf_cookie

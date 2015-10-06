@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^testCOLOR/$', test_page_COLOR, name = 'testCOLOR'),
     url(r'^groupsCOLOR/$', groups_page_COLOR, name = 'groupCOLOR'),
     url(r'^groupsCOLOR/(?P<theusername>\w+)/$', groups_page_COLOR),
+    url(r'^jsonCOLOR/$', summary_COLOR, name = 'summaryCOLOR'),
 
     url(r'^testBuilding/$', test_page_Building, name = 'testBuilding'),
     url(r'^groupsBuilding/$', groups_page_Building, name = 'groupBuilding'),

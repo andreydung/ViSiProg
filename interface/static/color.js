@@ -6,7 +6,6 @@ var controller = (function () {
   var listPath="/static/COLOR/list.txt";
   var listimage;
   var N_TOTAL;
-  var prob = [];
   var inPool = [];
   var haveSeen = [];
   var Nshown = 0;
@@ -16,6 +15,8 @@ var controller = (function () {
 
   var pressAllowed = true;
   var firstShuffle = true;
+
+  var poolQueue;
 
   function initializeArray(value, len) {
     // initialize an array of len with value
@@ -30,21 +31,52 @@ var controller = (function () {
     return Math.random() * (max - min) + min;
   }
 
-  function randomFromPool() {
-    // Pick a random image from the pool inPool, with probability prob.
-    var sum = 0;
-    for (var i = 0; i < N_TOTAL; i++) {
-      sum = sum + inPool[i] * prob[i];
-    }
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex ;
 
-    var random = getRandomfromRange(0, sum);
-    var cum = 0;
-    for (var i = 0; i < N_TOTAL; i++) {
-      cum += inPool[i] * prob[i];
-      if (cum > random)
-        return i;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
     }
-    return N_TOTAL - 1;
+    return array;
+  }
+
+  function Queue() {
+    this.stac = new Array();
+    this.dequeue = function() {
+      return this.stac.pop();
+    }
+    this.enqueue = function(item) {
+      this.stac.unshift(item);
+    }
+    this.isEmpty = function() {
+      return (this.stac.length === 0);
+    }
+  }
+
+  function randomFromPool() {
+    // Pick a random image from the pool inPool
+    if (poolQueue.isEmpty()) {
+      console.log("Empty queue!");
+      var arr = [];
+      for (var i = 0 ; i < N_TOTAL; i++) {
+        if (inPool[i])
+          arr.push(i);
+      }
+      shuffle(arr);
+      for (var i = 0; i < arr.length; i++) {
+        poolQueue.enqueue(arr[i]);
+      }
+    }
+    return poolQueue.dequeue();
   }
 
   function intersect(a, b) {
@@ -109,7 +141,6 @@ var controller = (function () {
         haveSeen[$(this).attr("id")] = 1;
         Nshown += 1;
       }
-      prob[$(this).attr("id")] /= 4;
       inPool[$(this).attr("id")] = 1;
     })
     // Change probability of shown images
@@ -119,10 +150,9 @@ var controller = (function () {
         Nshown += 1;
       }
       inPool[$(this).attr("id")] = 0;
-      prob[$(this).attr("id")] /= 4;
     })
     
-    $("#progress").text("You have seen ".concat(Math.floor(100*Nshown/N_TOTAL).toString()).concat("% of the database"));
+    $("#progress").text("You have seen ".concat(Math.floor(Nshown/N_TOTAL).toString()).concat("% of the database"));
 
     if (Nshown == N_TOTAL)
       $("#SubmitButton").css('display', 'inline');
@@ -175,6 +205,7 @@ var controller = (function () {
         prob = initializeArray(1, N_TOTAL);
         inPool = initializeArray(1, N_TOTAL);
         haveSeen = initializeArray(0, N_TOTAL);
+        poolQueue = new Queue();
 
         for (i = 0; i < N_BATCH; i++) {
           var tmp = randomFromPool();
@@ -231,9 +262,7 @@ var controller = (function () {
         $item.fadeOut(1, function() {
           $item.appendTo($batch).fadeIn(1);
         });
-          // $item.appendTo($batch);
-          // $item.remove();
-        }
+      }
 
       $(document).on("mousedown", function () {
         if ($('#group ul li').length >= N_GROUP) {
@@ -241,7 +270,7 @@ var controller = (function () {
         }
         else {
           $group.droppable("enable");
-      }
+        }
       });
 
       $("#ShuffleButton").on("click", Shuffle);
